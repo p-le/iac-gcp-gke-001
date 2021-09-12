@@ -35,6 +35,9 @@ jobs:
           location: asia-northeast1-b
           use_auth_provider: true
 
+      - uses: Confirm kubeconfig
+        run: ls -la ~
+
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
