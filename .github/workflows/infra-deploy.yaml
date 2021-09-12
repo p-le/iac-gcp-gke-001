@@ -1,4 +1,4 @@
-name: Prepare exectuton plan and apply infrastructure changes
+name: Plan & Apply Infra
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Build and Deploy changes to GKE App Side
+name: Plan & Apply GKE Resources
 
 on: workflow_dispatch
 
@@ -37,8 +37,8 @@ jobs:
       # Get the GKE credentials so we can deploy to the cluster
       - uses: google-github-actions/get-gke-credentials@main
         with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
+          cluster_name: dev-gke-001-cluster
+          location: asia-northeast1-b
           credentials: ${{ secrets.GKE_SA_KEY }}
 
       # Install the latest version of Terraform CLI
