@@ -39,7 +39,7 @@ jobs:
         run: ls -la ~
 
       - name: Confirm Kubeconfig
-        run: ls -la ${{ env.GITHUB_WORKSPACE }}
+        run: ls -la $GITHUB_WORKSPACE
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
