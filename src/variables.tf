@@ -29,3 +29,19 @@ variable "cluster_settings" {
   })
   description = "GKE cluster settings"
 }
+
+variable "wordpress" {
+  type = object({
+    replicas      = string
+    image_version = string
+  })
+  description = "Wordpress settings (Deployments, Service)"
+}
+
+variable "mysql" {
+  type = object({
+    replicas      = string
+    image_version = string
+  })
+  description = "MySQL settings (Deployments, Service)"
+}
