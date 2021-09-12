@@ -9,10 +9,6 @@ resource "null_resource" "mysql_secret" {
       GCP_PROJECT_ID = var.project_id
     }
   }
-
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }
 
 resource "kubernetes_persistent_volume" "mysql" {
@@ -30,9 +26,6 @@ resource "kubernetes_persistent_volume" "mysql" {
       }
     }
   }
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }
 
 resource "kubernetes_persistent_volume_claim" "mysql" {
@@ -48,10 +41,6 @@ resource "kubernetes_persistent_volume_claim" "mysql" {
     }
     volume_name = kubernetes_persistent_volume.mysql.metadata.0.name
   }
-
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }
 
 resource "kubernetes_deployment" "mysql" {
@@ -113,8 +102,7 @@ resource "kubernetes_deployment" "mysql" {
   }
 
   depends_on = [
-    null_resource.mysql_secret,
-    google_container_cluster.primary
+    null_resource.mysql_secret
   ]
 }
 
@@ -133,8 +121,4 @@ resource "kubernetes_service" "mysql" {
     }
     type = "ClusterIP"
   }
-
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }

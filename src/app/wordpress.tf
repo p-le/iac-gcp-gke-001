@@ -13,10 +13,6 @@ resource "kubernetes_persistent_volume" "wordpress" {
       }
     }
   }
-
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }
 
 resource "kubernetes_persistent_volume_claim" "wordpress" {
@@ -32,10 +28,6 @@ resource "kubernetes_persistent_volume_claim" "wordpress" {
     }
     volume_name = kubernetes_persistent_volume.wordpress.metadata.0.name
   }
-
-  depends_on = [
-    google_container_cluster.primary
-  ]
 }
 
 resource "kubernetes_deployment" "wordpress" {
@@ -111,8 +103,7 @@ resource "kubernetes_deployment" "wordpress" {
   }
 
   depends_on = [
-    null_resource.mysql_secret,
-    google_container_cluster.primary
+    null_resource.mysql_secret
   ]
 }
 
