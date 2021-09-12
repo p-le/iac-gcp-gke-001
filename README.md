@@ -29,18 +29,18 @@ make gcloud ARG="gcloud auth activate-service-account --key-file=/gcloud/credent
 
 ## Step 4: Config Github Repository Secrets for GitHub Actions
 Github Actions require these secret environments to be configured.
-- GCP_SA_KEY: The Service Account JSON key file from Step 2
+- GCP_SA_KEY: The Service Account JSON key file from Step 3
 - GCP_PROJECT: Target GCP Project ID
 - TERRAFORM_CLOUD_API_TOKEN: Register Terraform Cloud and accquire at https://www.terraform.io/cloud
 
 ## Step 5: Write Terraform configuration files
 1. `git checkout -b feature/xxx` or `git checkout -b hotfix/xxx`
-2. Update backend.tf, change to your remote GCS bucket
+2. Update `backend.tf`, configure your remote backend (In my case, Cloud Storage Bucket)
 	* `bucket`: Need to be created manually
 	* `region`
 	* `key`
 3. Update `terraform.tfvars.example` if needed, then create `terraform.tfvars`
-4. You run terraform command locally (Require Step2)
+4. You can run terraform command locally (Require Step 2, 3)
 For Example:
 ```
 make terraform ARG=init
@@ -56,14 +56,14 @@ make terraform ARG=destroy
 # Connect to GKE Cluster
 
 ## Get Cluster Credentials
-We mount `gcloud/.kube` directory to `/root/.kube` inside container.
-And you can use `gcloud container clusters get-credentials` to accquire the credentials.
+I'm mounting `gcloud/.kube` directory to `/root/.kube` inside container.
+So you run `gcloud container clusters get-credentials` to accquire the credentials, the file will also get synced to remote host.
 
 For Example:
 ```
 make gcloud ARG="gcloud container clusters get-credentials dev-gke-001-cluster --zone asia-northeast1-b --project multicloud-architect-b5e6e149"
 ```
-You can check the command from GCP GKE Dashboard.
+You can check this command from GCP GKE Dashboard.
 
 ## Using kubectl
 For Example:

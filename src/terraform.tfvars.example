@@ -6,3 +6,11 @@ cluster_settings = {
   zone         = "asia-northeast1-b"
   machine_type = "e2-medium"
 }
+wordpress = {
+  replicas      = 1
+  image_version = "5.8"
+}
+mysql = {
+  replicas      = 1
+  image_version = "8.0"
+}
