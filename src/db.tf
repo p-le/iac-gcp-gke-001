@@ -1,10 +1,10 @@
 resource "null_resource" "mysql_secret" {
   triggers = {
-    script_hash = "${sha256(file("secrets.sh"))}"
+    script_hash = "${sha256(file("${path.root}/secrets.sh"))}"
   }
 
   provisioner "local-exec" {
-    command = "secrets.sh"
+    command = "${path.root}/secrets.sh"
     environment = {
       GCP_PROJECT_ID = var.project_id
     }
