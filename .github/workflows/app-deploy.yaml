@@ -23,8 +23,8 @@ jobs:
       # Setup gcloud CLI
       - uses: google-github-actions/setup-gcloud@master
         with:
-          service_account_key: ${{ secrets.GKE_SA_KEY }}
-          project_id: ${{ secrets.GKE_PROJECT }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT }}
           export_default_credentials: true
 
 
@@ -33,8 +33,7 @@ jobs:
         with:
           cluster_name: dev-gke-001-cluster
           location: asia-northeast1-b
-          credentials: ${{ secrets.GKE_SA_KEY }}
-
+          use_auth_provider: true
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
