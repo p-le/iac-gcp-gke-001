@@ -5,7 +5,7 @@ resource "google_service_account" "default" {
 
 resource "google_container_cluster" "primary" {
   name       = "${var.environment}-${var.service_name}-cluster"
-  location   = var.region
+  location   = var.cluster_settings.zone
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
   master_auth {
@@ -15,17 +15,17 @@ resource "google_container_cluster" "primary" {
   }
   remove_default_node_pool = true
   initial_node_count       = 1
+
+  timeouts {
+    create = "10m"
+    delete = "10m"
+  }
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name     = "${var.environment}-${var.service_name}-preemptible-pool"
-  location = var.cluster_settings.zone
-  node_locations = [
-    var.cluster_settings.zone
-  ]
+  name       = "${var.environment}-${var.service_name}-preemptible-pool"
   cluster    = google_container_cluster.primary.name
   node_count = 1
-
   node_config {
     preemptible     = true
     machine_type    = var.cluster_settings.machine_type
