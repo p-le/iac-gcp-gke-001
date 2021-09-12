@@ -1,7 +1,7 @@
 BASE_PATH 			:= $(shell pwd)
 TERRAFORM_VERSION	:= 1.0.6
 GCLOUD_SDK_VERSION	:= 356.0.0-slim
-CREDENTIAL_FILE		:= abc.json
+CREDENTIAL_FILE		:= multicloud-architect-b5e6e149-4538bfe25d0e.json
 
 .PHONY: build-gcloud-terraform-image
 build-gcloud-terraform-image:

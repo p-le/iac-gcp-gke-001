@@ -1,2 +1,8 @@
-project_id  = "multicloud-architect-b5e6e149"
-region      = "asia-northeast1"
+environment  = "dev"
+project_id   = "multicloud-architect-b5e6e149"
+region       = "asia-northeast1"
+service_name = "gke-001"
+cluster_settings = {
+  zone         = "asia-northeast1-b"
+  machine_type = "e2-medium"
+}
