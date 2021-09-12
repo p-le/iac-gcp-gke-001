@@ -3,8 +3,8 @@ name: Plan & Apply GKE Resources
 on: workflow_dispatch
 
 jobs:
-  setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+  Terraform:
+    name: Terraform
     runs-on: ubuntu-latest
     environment: development
 
