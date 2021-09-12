@@ -18,8 +18,11 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "${var.environment}-${var.service_name}-preemptible-pool"
-  location   = var.cluster_settings.zone
+  name     = "${var.environment}-${var.service_name}-preemptible-pool"
+  location = var.cluster_settings.zone
+  node_locations = [
+    var.cluster_settings.zone
+  ]
   cluster    = google_container_cluster.primary.name
   node_count = 1
 
