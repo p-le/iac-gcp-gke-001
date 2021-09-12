@@ -1,14 +1,17 @@
-name: Prepare & Update Infrastructure
+name: Build and Deploy changes to GKE App Side
 
-on:
-  push:
-    branches:
-    - main
-  pull_request:
+on: workflow_dispatch
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: cluster-1    # TODO: update to cluster name
+  GKE_ZONE: us-central1-c   # TODO: update to cluster zone
+  DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
+  IMAGE: static-site
 
 jobs:
-  terraform:
-    name: Terraform
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     environment: development
 
@@ -16,7 +19,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./src
+        working-directory: ./src/app
 
     steps:
 
@@ -27,9 +30,16 @@ jobs:
       # Setup gcloud CLI
       - uses: google-github-actions/setup-gcloud@master
         with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT }}
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          project_id: ${{ secrets.GKE_PROJECT }}
           export_default_credentials: true
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@main
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
@@ -58,36 +68,11 @@ jobs:
         run: terraform plan -no-color
         continue-on-error: true
 
-      # Adds a comment to the pull request with results of the format, init and plan
-      - name: Update Pull Request
-        id: add-comment
-        uses: actions/github-script@v4
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          script: |
-            const output = `#### Terraform Format and Style: ${{ steps.fmt.outcome }}
-            #### Terraform Initialization: ⚙️ ${{ steps.init.outcome }}
-            #### Terraform Plan: ${{ steps.plan.outcome }}`;
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-
-      # Print result of the github-script
-      - name: Get result
-        if: github.event_name == 'pull_request'
-        run: echo "${{steps.add-comment.outputs.result}}"
-
-      # Exit if terraform plan failed
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
       # Apply the plan if merge to branch master
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
+
+      # Deployment Confirm
+      - name: Deploy
+        run: kubectl get services -o wide

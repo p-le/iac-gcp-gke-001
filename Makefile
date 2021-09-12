@@ -23,8 +23,8 @@ gcloud:
 		gcloud:$(GCLOUD_SDK_VERSION) \
 			$(ARG)
 
-.PHONY: terraform
-terraform:
+.PHONY: terraform-infra
+terraform-infra:
 	@docker container run -it --rm \
 		-v ${BASE_PATH}/gcloud/.kube:/root/.kube \
 		-v ${BASE_PATH}/gcloud/config:/gcloud/config \
@@ -32,5 +32,15 @@ terraform:
 		-v $(BASE_PATH)/src:/work \
 		-e GOOGLE_APPLICATION_CREDENTIALS=/gcloud/credentials/$(CREDENTIAL_FILE) \
 		-e CLOUDSDK_CONFIG=/gcloud/config \
-		gcloud:$(GCLOUD_SDK_VERSION) terraform $(ARG)
+		gcloud:$(GCLOUD_SDK_VERSION) terraform  -chdir=/work/infra $(ARG)
 
+.PHONY: terraform-app
+terraform-app:
+	@docker container run -it --rm \
+		-v ${BASE_PATH}/gcloud/.kube:/root/.kube \
+		-v ${BASE_PATH}/gcloud/config:/gcloud/config \
+		-v ${BASE_PATH}/gcloud/credentials:/gcloud/credentials \
+		-v $(BASE_PATH)/src:/work \
+		-e GOOGLE_APPLICATION_CREDENTIALS=/gcloud/credentials/$(CREDENTIAL_FILE) \
+		-e CLOUDSDK_CONFIG=/gcloud/config \
+		gcloud:$(GCLOUD_SDK_VERSION) terraform  -chdir=/work/app $(ARG)
