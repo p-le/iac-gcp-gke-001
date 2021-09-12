@@ -32,6 +32,7 @@ jobs:
         with:
           cluster_name: dev-gke-001-cluster
           location: asia-northeast1-b
+          use_auth_provider: true
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
