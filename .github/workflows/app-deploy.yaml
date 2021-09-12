@@ -2,13 +2,6 @@ name: Plan & Apply GKE Resources
 
 on: workflow_dispatch
 
-env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: cluster-1    # TODO: update to cluster name
-  GKE_ZONE: us-central1-c   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
-  IMAGE: static-site
-
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
@@ -39,7 +32,6 @@ jobs:
         with:
           cluster_name: dev-gke-001-cluster
           location: asia-northeast1-b
-          credentials: ${{ secrets.GKE_SA_KEY }}
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
