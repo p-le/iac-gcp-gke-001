@@ -84,10 +84,6 @@ resource "kubernetes_deployment" "wordpress" {
       }
     }
   }
-
-  depends_on = [
-    null_resource.mysql_secret
-  ]
 }
 
 

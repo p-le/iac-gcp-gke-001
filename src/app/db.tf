@@ -70,10 +70,6 @@ resource "kubernetes_deployment" "mysql" {
       }
     }
   }
-
-  depends_on = [
-    null_resource.mysql_secret
-  ]
 }
 
 
