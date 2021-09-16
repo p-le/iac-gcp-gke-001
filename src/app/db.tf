@@ -75,6 +75,7 @@ resource "kubernetes_deployment" "mysql" {
         }
         # Volumes Definitions
         volume {
+          name = "mysql-persistent-storage"
           persistent_volume_claim {
             claim_name = kubernetes_persistent_volume_claim.mysql.metadata.0.name
           }

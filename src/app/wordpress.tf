@@ -76,6 +76,7 @@ resource "kubernetes_deployment" "wordpress" {
         }
         # Volumes Definitions
         volume {
+          name = "wordpress-persistent-storage"
           persistent_volume_claim {
             claim_name = kubernetes_persistent_volume_claim.wordpress.metadata.0.name
           }
