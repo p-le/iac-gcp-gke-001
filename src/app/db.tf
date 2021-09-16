@@ -13,7 +13,7 @@ resource "null_resource" "mysql_secret" {
 
 resource "kubernetes_persistent_volume" "mysql" {
   metadata {
-    name = "mysql-volume"
+    name = "${var.environment}-${var.service_name}-${var.region}-mysql"
   }
   spec {
     capacity = {
@@ -22,7 +22,7 @@ resource "kubernetes_persistent_volume" "mysql" {
     access_modes = ["ReadWriteOnce"]
     persistent_volume_source {
       gce_persistent_disk {
-        pd_name = "${var.service_name}-mysql"
+        pd_name = "${var.environment}-${var.service_name}-${var.region}-mysql"
       }
     }
   }

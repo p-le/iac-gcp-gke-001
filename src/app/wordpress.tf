@@ -1,6 +1,6 @@
 resource "kubernetes_persistent_volume" "wordpress" {
   metadata {
-    name = "wordpress-volume"
+    name = "${var.environment}-${var.service_name}-${var.region}-wordpress"
   }
   spec {
     capacity = {
@@ -9,7 +9,7 @@ resource "kubernetes_persistent_volume" "wordpress" {
     access_modes = ["ReadWriteOnce"]
     persistent_volume_source {
       gce_persistent_disk {
-        pd_name = "${var.service_name}-wordpress"
+        pd_name = "${var.environment}-${var.service_name}-${var.region}-wordpress"
       }
     }
   }

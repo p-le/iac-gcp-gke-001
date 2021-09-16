@@ -29,14 +29,9 @@ jobs:
 
 
       # Get the GKE credentials so we can deploy to the cluster
+      # NOTE: ~/.kube/config will be created
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials dev-gke-001-cluster --zone asia-northeast1-b --project ${{ secrets.GCP_PROJECT }}
-
-      - name: Confirm Kubeconfig
-        run: ls -la ~
-
-      - name: Confirm Kubeconfig
-        run: ls -la $GITHUB_WORKSPACE
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
