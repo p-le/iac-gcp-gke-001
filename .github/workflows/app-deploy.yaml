@@ -29,11 +29,8 @@ jobs:
 
 
       # Get the GKE credentials so we can deploy to the cluster
-      - name: google-github-actions/get-gke-credentials@main
+      - name: Get GKE credentials
         run: gcloud container clusters get-credentials dev-gke-001-cluster --zone asia-northeast1-b --project ${{ secrets.GCP_PROJECT }}
-          cluster_name: dev-gke-001-cluster
-          location: asia-northeast1-b
-          use_auth_provider: true
 
       - name: Confirm Kubeconfig
         run: ls -la ~
