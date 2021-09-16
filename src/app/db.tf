@@ -11,23 +11,6 @@ resource "null_resource" "mysql_secret" {
   }
 }
 
-resource "kubernetes_persistent_volume" "mysql" {
-  metadata {
-    name = "${var.environment}-${var.service_name}-${var.region}-mysql"
-  }
-  spec {
-    capacity = {
-      storage = "50Gi"
-    }
-    access_modes = ["ReadWriteOnce"]
-    persistent_volume_source {
-      gce_persistent_disk {
-        pd_name = "${var.environment}-${var.service_name}-${var.region}-mysql"
-      }
-    }
-  }
-}
-
 resource "kubernetes_persistent_volume_claim" "mysql" {
   metadata {
     name = "mysql-volumeclaim"
@@ -36,10 +19,9 @@ resource "kubernetes_persistent_volume_claim" "mysql" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "100Gi"
+        storage = "50Gi"
       }
     }
-    volume_name = kubernetes_persistent_volume.mysql.metadata.0.name
   }
 }
 

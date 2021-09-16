@@ -1,20 +1,3 @@
-resource "kubernetes_persistent_volume" "wordpress" {
-  metadata {
-    name = "${var.environment}-${var.service_name}-${var.region}-wordpress"
-  }
-  spec {
-    capacity = {
-      storage = "50Gi"
-    }
-    access_modes = ["ReadWriteOnce"]
-    persistent_volume_source {
-      gce_persistent_disk {
-        pd_name = "${var.environment}-${var.service_name}-${var.region}-wordpress"
-      }
-    }
-  }
-}
-
 resource "kubernetes_persistent_volume_claim" "wordpress" {
   metadata {
     name = "wordpress-volumeclaim"
@@ -23,10 +6,9 @@ resource "kubernetes_persistent_volume_claim" "wordpress" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "100Gi"
+        storage = "50Gi"
       }
     }
-    volume_name = kubernetes_persistent_volume.wordpress.metadata.0.name
   }
 }
 
