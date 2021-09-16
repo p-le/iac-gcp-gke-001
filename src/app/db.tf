@@ -1,16 +1,3 @@
-resource "null_resource" "mysql_secret" {
-  triggers = {
-    script_hash = "${sha256(file("${path.root}/secrets.sh"))}"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.root}/secrets.sh"
-    environment = {
-      GCP_PROJECT_ID = var.project_id
-    }
-  }
-}
-
 resource "kubernetes_persistent_volume_claim" "mysql" {
   metadata {
     name = "mysql-volumeclaim"
