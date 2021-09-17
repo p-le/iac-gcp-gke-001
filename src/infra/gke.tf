@@ -14,7 +14,7 @@ resource "google_container_cluster" "primary" {
     password = ""
   }
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count       = 2
 
   timeouts {
     create = "10m"
