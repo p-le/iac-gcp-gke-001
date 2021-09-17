@@ -43,7 +43,7 @@ resource "kubernetes_deployment" "wordpress" {
           name  = "wordpress"
           env {
             name  = "WORDPRESS_DB_HOST"
-            value = "mysql:3306"
+            value = "mysql"
           }
           env {
             name = "WORDPRESS_DB_PASSWORD"
