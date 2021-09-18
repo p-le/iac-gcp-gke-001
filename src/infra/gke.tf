@@ -14,7 +14,7 @@ resource "google_container_cluster" "primary" {
     password = ""
   }
   remove_default_node_pool = true
-  initial_node_count       = 2
+  initial_node_count       = 1
 
   timeouts {
     create = "10m"
@@ -26,7 +26,8 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   name       = "${var.environment}-${var.service_name}-preemptible-pool"
   location   = var.cluster_settings.zone
   cluster    = google_container_cluster.primary.name
-  node_count = 1
+  node_count = 2
+
   node_config {
     preemptible     = true
     machine_type    = var.cluster_settings.machine_type
